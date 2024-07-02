@@ -21,11 +21,16 @@ export enum FilterTypes {
 export interface IState{
     events:IEvent[]
     currentFilter:FilterTypes
+    open: boolean
+    currentEvent: IEvent
 }
 export enum ActionTypes{
     setEvents,
     addEvent,
-    setFilter
+    setFilter,
+    open,
+    currentEvent,
+    updateEvent
 }
 export interface IAction{
     type:ActionTypes,

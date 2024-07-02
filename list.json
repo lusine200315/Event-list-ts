@@ -1,22 +1,22 @@
 {
   "events": [
     {
-      "id": "101",
-      "title": "Anoush",
-      "date": "July 2",
-      "time": "19:00",
-      "type": "opera",
-      "composer": "A. Tigranian",
-      "cover": "https://ticket.opera.am/uploads/images/5d34a043044cc714745c06a201800386.jpg"
+      "title": "Anoushhhhhh-testtest",
+      "date": "2001-07-01",
+      "time": "16:00",
+      "composer": "A. Tigraniann",
+      "cover": "https://ticket.opera.am/uploads/images/5d34a043044cc714745c06a201800386.jpg",
+      "type": "ballet",
+      "id": "101"
     },
     {
-      "id": "102",
-      "title": "Swan Lake",
-      "date": "July 4",
+      "title": "Test Test",
+      "date": "2001-07-03",
       "time": "19:00",
-      "type": "ballet",
       "composer": "P. Tchaykovsky",
-      "cover": "https://ticket.opera.am/uploads/images/Swan-Lake-Afisha-1494x1920px-min.jpg"
+      "cover": "https://ticket.opera.am/uploads/images/Swan-Lake-Afisha-1494x1920px-min.jpg",
+      "type": "opera",
+      "id": "102"
     },
     {
       "id": "103",

@@ -1,9 +1,10 @@
 import { Box, Button, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { postEvent } from "../lib/api";
-import { ActionTypes } from "../lib/types";
 import { EventContext } from "../lib/Context";
+import { ActionTypes } from "../lib/types";
+import { updateEvent } from "../lib/api";
+
 
 interface Inputs {
     title: string
@@ -12,34 +13,49 @@ interface Inputs {
     cover: string
     composer: string
     type: string
+    id: string
 }
 
-export const AddEvent = () => {
-    const [open, setOpen] = useState<boolean>(false);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
-
+export const EditEvent:React.FC = () => {
     const context = useContext(EventContext);
     if(!context) {
         throw new Error("Outside a provider...");
     }
+    
+    const {state, dispatch} = context;
+    
+    const formattedDate = new Date(state.currentEvent.date).toISOString().split('T')[0];
 
-    const { dispatch } = context;
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>({
+        defaultValues: {
+          title: state.currentEvent.title,
+          date: formattedDate,
+          time: state.currentEvent.time,
+          composer: state.currentEvent.composer,
+          cover: state.currentEvent.cover,
+          type: state.currentEvent.type,
+          id: state.currentEvent.id
+        }
+    });
+
+    
 
     const handleAdd: SubmitHandler<Inputs> = (data) => {
-        postEvent(data)
-            .then(res => {
-                dispatch({ type: ActionTypes.addEvent, payload: res });
-                setOpen(false);
-                reset(); // Clear the form fields after successful submission
-            })
-            .catch((error) => {
-                console.error("Failed to post event:", error);
-            });
+        updateEvent(data)
+        .then(res => {
+            dispatch({ type: ActionTypes.open, payload: false })
+            dispatch({ type: ActionTypes.updateEvent, payload: res });
+            reset();
+        })
+        .catch((error) => {
+            console.error("Failed to post event:", error);
+        });
     }
 
-    return (
+ 
+ return <>
         <Box my={2}>
-            <Modal open={open} onClose={() => setOpen(false)}>
+            <Modal open={state.open} onClose={() => dispatch({ type: ActionTypes.open, payload: true })}>
                 <Box sx={{
                     position: 'absolute',
                     top: '50%',
@@ -52,7 +68,7 @@ export const AddEvent = () => {
                     p: 4,
                     color: 'blue'
                 }}>
-                    <Typography variant="h6" mb={2}>Add New Event</Typography>
+                    <Typography variant="h6" mb={2}>Edit Event</Typography>
                     <form onSubmit={handleSubmit(handleAdd)}>
                         <Box my={2}>
                             <TextField
@@ -115,7 +131,7 @@ export const AddEvent = () => {
                         <Box my={2}>
                             <Select
                                 label="Type"
-                                defaultValue=""
+                                defaultValue={state.currentEvent.type}
                                 fullWidth
                                 {...register("type", { required: "Type is required" })}
                                 error={!!errors.type}
@@ -130,5 +146,5 @@ export const AddEvent = () => {
                 </Box>
             </Modal>
         </Box>
-    );
+    </>
 }

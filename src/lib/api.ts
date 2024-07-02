@@ -15,3 +15,9 @@ export const postEvent = async (data: INewEvent): Promise<IEvent> => {
     const response = await axios.post<IEvent>(URL, data);
     return response.data;
 };
+
+export const updateEvent = async (data: IEvent): Promise<IEvent> => {
+    
+    const response = await axios.put<IEvent>(`${URL}/${data.id}`, data);
+    return response.data;
+};
